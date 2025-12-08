@@ -4,7 +4,7 @@ In this Worksheet I was introduced to basic x86 assembly programming using NASM 
 
 my final code structrure looks like this
 
-![Structure](image.png)
+![Structure](Structure.png)
 
 Source Code:
 
@@ -109,7 +109,7 @@ the following commands were used inside hte src/directory
 - and the final line links everything together into an executable called task1
 
 Below is the screenshot of the NASM and GCC commands used to build the program.
-![build](image.png)
+![build](Build.png)
 
 8. Program Output
 Running the executable:
@@ -119,7 +119,7 @@ Output:
 This confirms the assembly program successfully added  the numbers and printed the result.
 
 This screenshot shows the program running succesffully:
-![Output](image.png)
+![Output](Output.png)
  
 ---What I Learned---
 
