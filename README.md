@@ -649,6 +649,7 @@ this rule in my makefile:
 src/%.o: src/%.asm
 	nasm -f elf $< -o $@
 ```
+
 means that any .asm file in the src/ folder can automatically be converted into a .o file using the same NASM command.
 
 I dont have to make speerate rules like  
@@ -657,17 +658,21 @@ I dont have to make speerate rules like
 task1.o: task1.asm  
 task2_loops.o: task2_loops.asm  
 task2_welcome.o: task2_welcome.asm  
-...
+```
+
 Make handles all of them with one pattern rule. 
 I learned that pattern rules make Makefiles shorter, cleaner, and easier to maintain.
 
 - The purpose of a clean target 
-my Makefile includes: 
+my Makefile includes:
+
 ```
 clean:
 	rm -f src/*.o task1 task2_example task2_loops task2_welcome task2_array
 ```
+
 and when i run:
+
 
 ```
 make clean
