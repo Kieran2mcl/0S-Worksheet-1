@@ -552,3 +552,145 @@ Total sum (1–100): 5050
 Enter start index (1–100): 10
 Enter end index (1–100): 20
 Range sum: 165
+
+# Task 3 makefile for building programs
+in the previous tasks, each program was compiled manually using several commands:
+```
+nasm -f elf task2_loops.asm -o task2_loops.o
+gcc -m32 -c driver.c -o driver.o
+gcc -m32 driver.o task2_loops.o asm_io.o -o task2_loops
+```
+task 3 requires creating a makefile so that the entire build process is automates.
+
+To avoid typing long NASM and GCC commands for everyprogram, I createda Makefile. A Makefile automates the build process and allows all the progams to be compiled with a single command "make"
+
+This ensures that all the assembelly programs from task 1 and 2 are built consistently and correctly.
+
+## Makefile overview
+My Makefile contains:
+
+A default rule that builds all programs:
+all: task1 task2_example task2_loops task2_welcome task2_array
+
+- Rules for compiling and linking each program
+Example:
+```
+task1: src/task1.o src/asm_io.o src/driver.o
+	gcc -m32 src/driver.o src/task1.o src/asm_io.o -o task1
+```
+
+- A generic rule to assemble .asm files into .o files:
+```
+src/%.o: src/%.asm
+	nasm -f elf $< -o $@
+```
+
+- A rule to compile the shared C driver:
+src/driver.o: src/driver.c
+	gcc -m32 -c src/driver.c -o src/driver.o
+
+- A clean rule:
+```
+clean:
+	rm -f src/*.o task1 task2_example task2_loops task2_welcome task2_array
+```
+Running make clean removes all build files.
+
+---how make works---
+When the make command is executed, make looks  for a file called Makefile and it then reads the first rule (all:task1 task2_example task2_loops task2_welcome task2_array) and treats it as the fefault target. It then checks each file listed inthe rule anda decides wether it needs to rerbuild it. 
+
+if a .asm or .c file is newer than the .o or executable, make automatically recompiles only what is needed. make stops rebuilding as soon as everything is up to date. This allows for fast adn efficient rebuilding of large projects.
+
+
+------How to build everything------
+
+from the project root: 
+
+![make](image-2.png)
+
+this automatically :
+- assembles all .asm files
+- compiles hte shared C driver
+- links the programs
+- outputs 5 executables:
+    - task1
+    - task2_example
+    - task2_loops
+    - task2_welcome
+    - task2_array
+
+-----Why this is useful-----
+
+using a makefiles prevents typing mistakes in NASM and GCC commands whilst also makes rebuilding the whole project simple, keepsing the repository organised , and is more professional and repreducible.
+
+---what I learned from task 3---
+ 
+
+Creating the Makefile helped me understand how real software projects automate compilation and manage multiple source files. some of the key things i learned include:
+
+- automating NASM and GCCC builds using Make
+
+Before the Makefile, each program nedded several manual commands, for example
+```
+nasm -f elf task2_loops.asm -o task2_loops.o
+gcc -m32 -c driver.c -o driver.o
+gcc -m32 driver.o task2_loops.o asm_io.o -o task2_loops
+```
+Typing these commands repeadtedly is slow and error-prone, whereas a makefile automates all of the instructions. #
+
+make runs all required NASM and GCC command in the correct order. this taught me how to build tools remove repettitive work and reduce mistakes.
+
+
+- How pattern rules reduce repetition
+
+this rule in my makefile:
+
+```
+src/%.o: src/%.asm
+	nasm -f elf $< -o $@
+```
+means that any .asm file in the src/ folder can automatically be converted into a .o file using the same NASM command.
+
+I dont have to make speerate rules like  
+
+```
+task1.o: task1.asm  
+task2_loops.o: task2_loops.asm  
+task2_welcome.o: task2_welcome.asm  
+...
+Make handles all of them with one pattern rule. 
+I learned that pattern rules make Makefiles shorter, cleaner, and easier to maintain.
+
+- The purpose of a clean target 
+my Makefile includes: 
+```
+clean:
+	rm -f src/*.o task1 task2_example task2_loops task2_welcome task2_array
+```
+and when i run:
+
+```
+make clean
+```
+removes all generated files
+
+i learne dthat clean targets are important because they:
+
+- keep the folder tidy
+-remove old compiled files
+-ensure the next build
+- help avoi dbugs cause by outdated binaries
+
+
+--- overall learning outcome ---
+
+task 3 gave me a strong understanding of:
+
+- how real build automation works
+- how assembely  and C programs can be managed
+-how to make improves reliability and productivity
+- how profecions software projects are structured
+
+the make file turned my project from a collection of seperate scripts into  aclean, automated, and scalable build system.
+
+## Task 4 - Final Documentation and 
